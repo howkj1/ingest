@@ -5,7 +5,7 @@ echo "| script name:    | " $0;
 echo "| number of args: | " $#;
 echo "| args supplied:  | " $@;
 
-# Welcome to ingest,  a tool for batch converting media formats.
+# Welcome to ingest, a tool for batch converting video media formats.
 # ingest currently relies on ffmpeg for the heavy lifting.
 
 # errors:
