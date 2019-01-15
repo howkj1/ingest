@@ -103,11 +103,21 @@ outxt=.$2
 #   [ -f "$i" ] & printf "$i --> ${i%.*}$outxt \n" || break;
 # done;
 
-# default mvp
+# # default mvp
+# echo;
+# for i in $inxt; do
+#   # if file $i exists then run ffmpeg input output else if no more results then break.
+#   [ -f "$i" ] && printf "$i --> ${i%.*}$outxt \n" && ffmpeg -loglevel panic -i "$i" -c copy "${i%.*}"$outxt;
+# done;
+# printf "finished encoding \n";
+
 echo;
 for i in $inxt; do
   # if file $i exists then run ffmpeg input output else if no more results then break.
-  [ -f "$i" ] && printf "$i --> ${i%.*}$outxt \n" && ffmpeg -loglevel panic -i "$i" -c copy "${i%.*}"$outxt;
+  [ -f "$i" ] && printf "encoding: $i --> ${i%.*}$outxt \n" && \
+  ffmpeg -loglevel panic -i "$i" -c:v dnxhd -profile dnxhr_lb -c:a copy "${i%.*}"$outxt && \
+  printf "splitting audio: $i --> ${i%.*}.wav \n" && \
+  ffmpeg -loglevel panic -i "$i" -vn -c:a pcm_s16le "${i%.*}".wav;
 done;
 printf "finished encoding \n";
 
