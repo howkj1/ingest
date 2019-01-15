@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo "debug enabled... "
-echo "| script name:    | " $0;
-echo "| number of args: | " $#;
-echo "| args supplied:  | " $@;
+# echo "debug enabled... "
+# echo "| script name:    | " $0;
+# echo "| number of args: | " $#;
+# echo "| args supplied:  | " $@;
 
 # Welcome to ingest, a tool for batch converting video media formats.
 # ingest currently relies on ffmpeg for the heavy lifting.
@@ -43,8 +43,6 @@ echo "| args supplied:  | " $@;
 
 
 
-
-
 ##################################################################
 ### MVP ###
 
@@ -79,22 +77,36 @@ fi
 
 
 
-
-
 ### main ###
 #
 
+# run script from working directory
+cd "$PWD";
 # set parm $1 to ext for further processing without losing/modifying its value.
 inxt=*.$1
 # set parm $2 to ext for further processing without losing/modifying its value.
-outxt=*.$2
+outxt=.$2
 
 
+# # initial debug. shows input files selected.
+# printf "detected: \n"
+# for i in $inxt; do
+#   [ -f "$i" ] & printf "$i\n" || break;
+# done
 
-# initial debug. shows input files selected.
+# # Debug Default
+# for i in $inxt; do
+#   # if file $i exists then run ffmpeg input output else if no more results then break.
+#   [ -f "$i" ] & printf "$i --> ${i%.*}$outxt \n" || break;
+# done;
+
+# default mvp
+echo;
 for i in $inxt; do
-  [ -f "$i" ] & printf "main stuffs goes here: \n$i\n" || break;
-done
+  # if file $i exists then run ffmpeg input output else if no more results then break.
+  [ -f "$i" ] && printf "$i --> ${i%.*}$outxt \n" && ffmpeg -loglevel panic -i "$i" -c copy "${i%.*}"$outxt;
+done;
+printf "finished encoding \n";
 
 
 ### END MVP ###
