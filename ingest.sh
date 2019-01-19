@@ -2,7 +2,7 @@
 
 
 # https://github.com/howkj1/ingest
-
+#
 # echo "debug enabled... "
 # echo "| script name:    | " $0;
 # echo "| number of args: | " $#;
@@ -115,9 +115,10 @@ echo;
 for i in $inxt; do
   # if file $i exists then run ffmpeg input output else if no more results then break.
   [ -f "$i" ] && printf "encoding: $i --> ${i%.*}$outxt \n" && \
-  ffmpeg -loglevel panic -i "$i" -c:v dnxhd -profile dnxhr_lb -c:a copy "${i%.*}"$outxt && \
-  printf "splitting audio: $i --> ${i%.*}.wav \n" && \
-  ffmpeg -loglevel panic -i "$i" -vn -c:a pcm_s16le "${i%.*}".wav;
+  ffmpeg -loglevel panic -i "$i" -c:v dnxhd -profile dnxhr_lb -c:a pcm_s16le "${i%.*}"$outxt;
+  #  -progress /dev/stdout && \
+  # printf "splitting audio: $i --> ${i%.*}.wav \n" && \
+  # ffmpeg -loglevel panic -i "$i" -vn -c:a pcm_s16le "${i%.*}".wav;
 done;
 printf "finished encoding \n";
 
